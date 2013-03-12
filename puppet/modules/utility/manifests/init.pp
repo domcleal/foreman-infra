@@ -1,4 +1,7 @@
 class utility {
+
+  class { 'utility::repos': }
+
   package { "vim":
     ensure => present,
     name => $osfamily ? {
@@ -30,4 +33,17 @@ class utility {
       default => "ruby-shadow"
     }
   }
+
+  # This can be expanded to include yum systems later
+  case $::operatingsystem {
+    fedora,redhat,centos,Scientific: {}
+    Debian,Ubuntu: {
+      package { ['puppet-common','puppet']:
+        ensure  => '2.7.20-2puppetlabs1',
+        require => Apt::Source['puppetlabs'],
+      }
+    }
+    default: {}
+  }
+
 }
