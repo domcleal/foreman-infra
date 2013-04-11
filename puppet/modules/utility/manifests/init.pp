@@ -34,16 +34,12 @@ class utility {
     }
   }
 
-  # This can be expanded to include yum systems later
-  case $::operatingsystem {
-    fedora,redhat,centos,Scientific: {}
-    Debian,Ubuntu: {
-      package { ['puppet-common','puppet']:
-        ensure  => '2.7.20-2puppetlabs1',
-        require => Apt::Source['puppetlabs'],
-      }
-    }
-    default: {}
+  $puppet_version = $::osfamily ? {
+    Debian => '2.7.21-2puppetlabs1',
+    RedHat => '2.7.21',
   }
-
+  package { ['puppet-common','puppet']:
+    ensure => $puppet_version,
+    require => Class['utility::repos'],
+  }
 }
