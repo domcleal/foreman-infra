@@ -1,0 +1,4 @@
+- builder:
+    name: duffy_install_vagrant
+    builders:
+      - shell: !include-raw scripts_centos/duffy_install_vagrant.sh

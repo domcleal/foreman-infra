@@ -1,0 +1,4 @@
+- builder:
+    name: duffy_create
+    builders:
+      - shell: !include-raw scripts_centos/duffy_create.py

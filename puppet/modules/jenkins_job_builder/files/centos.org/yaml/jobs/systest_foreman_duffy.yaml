@@ -1,0 +1,72 @@
+- job:
+    name: foreman_systest_foreman_duffy
+    concurrent: true
+    logrotate:
+      daysToKeep: 3
+      numToKeep: -1
+    scm:
+      - foreman-bats
+    builders:
+      - duffy_create
+      - duffy_install_vagrant
+      - systest_foreman
+    wrappers:
+      - timeout:
+          timeout: 60
+          type: absolute
+    parameters:
+      - string:
+          name: repo
+          default: nightly
+          description: 'Repo to test. Prefixes appropriate to the test repo is automatically added ("foreman" for koji, "theforeman" for stagingdeb), so use only the variable component, e.g. <code>nightly</code> or <code>1.6</code>'
+      - bool:
+          name: staging
+          default: false
+          description: 'True to test staged packages (koji/stagingdeb) or false to test latest published packages'
+      - string:
+          name: os
+          default: ''
+          description: 'OS code, e.g. <code>el6</code>, <code>f18</code>, <code>wheezy</code>'
+      - bool:
+          name: pl_puppet
+          default: false
+          description: 'Whether to install Puppet from Puppet Labs first, instead of using the distro version.'
+      - bool:
+          name: nightly_puppet
+          default: false
+          description: 'Whether to enable nightly Puppet repos, use in addition to pl_puppet.'
+      - bool:
+          name: run_puppet_tests
+          default: false
+          description: 'Whether to run additional Foreman/Puppet integration tests.'
+      - bool:
+          name: run_hammer_tests
+          default: false
+          description: 'Whether to run additional hammer tests (https://github.com/theforeman/hammer-tests).'
+      - string:
+          name: hammer_tests_owner
+          default: theforeman
+          description: ''
+      - string:
+          name: hammer_tests_branch
+          default: master
+          description: ''
+      - string:
+          name: hammer_deps
+          default: ''
+          description: 'Install additional gem dependencies for hammer tests. Can be used for testing your own branches.  Whitespace separated list of gem names or git urls in format <code>https://github.com/owner/repo.git#name_of_branch</code>.
+
+E.g.
+<code>https://github.com/theforeman/hammer-cli.git#test</code>'
+      - string:
+          name: db_type
+          default: ''
+          description: 'Database server to use, default is PostgreSQL (postgresql/mysql/sqlite)'
+      - string:
+          name: umask
+          default: ''
+          description: 'umask value for all shells, default is OS default (e.g. 022)'
+    publishers:
+      - duffy_fail
+      - duffy_done
+      - systest_foreman

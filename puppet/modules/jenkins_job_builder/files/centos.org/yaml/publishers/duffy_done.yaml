@@ -1,0 +1,10 @@
+- publisher:
+    name: duffy_done
+    publishers:
+    - post-tasks:
+        - matches:
+          - log-text: ""
+            operator: AND
+          escalate-status: false
+          run-if-job-successful: true
+          script: !include-raw scripts_centos/duffy_done.py
