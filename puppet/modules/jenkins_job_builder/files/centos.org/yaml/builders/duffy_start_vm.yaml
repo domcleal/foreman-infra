@@ -1,0 +1,4 @@
+- builder:
+    name: duffy_start_vm
+    builders:
+      - shell: !include-raw scripts_centos/duffy_start_vm.sh

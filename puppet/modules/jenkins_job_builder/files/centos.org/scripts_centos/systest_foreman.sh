@@ -1,19 +1,22 @@
 #!/bin/bash -xe
 
 function vagrant() {
-  ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$(head -1 hosts) vagrant "$@"
+  subcmd=shift
+  if [ $subcmd = ssh ]; then
+    ssh -F ssh_config "$@"
+  fi
 }
 
 ### Original systest_foreman below, try not to change it!
 
 rm -f *.bats.out || true
 
-if [ ${os} = f19 ]; then
-  # https://github.com/mitchellh/vagrant-rackspace/issues/132
-  echo "skipping f19, no Rackspace image"
-  echo "1..0 # Skipped: no Rackspace image for f19" > skipped.bats.out
-  exit 0
-fi
+#if [ ${os} = f19 ]; then
+#  # https://github.com/mitchellh/vagrant-rackspace/issues/132
+#  echo "skipping f19, no Rackspace image"
+#  echo "1..0 # Skipped: no Rackspace image for f19" > skipped.bats.out
+#  exit 0
+#fi
 
 if [ ${os#f} != $os ]; then
   [ $repo != nightly ] && FOREMAN_REPO=releases/$repo
@@ -76,7 +79,7 @@ fi
 
 [ -e debug ] && rm -rf debug/
 mkdir debug
-vagrant ssh-config $os > ssh_config
+#vagrant ssh-config $os > ssh_config
 scp -F ssh_config ${os}:/root/last_logs debug/ || true
 scp -F ssh_config ${os}:/root/sosreport* debug/ || true
 scp -F ssh_config ${os}:/root/foreman-debug* debug/ || true

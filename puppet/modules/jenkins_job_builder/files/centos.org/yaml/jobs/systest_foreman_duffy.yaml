@@ -8,7 +8,7 @@
       - foreman-bats
     builders:
       - duffy_create
-      - duffy_install_vagrant
+      - duffy_start_vm
       - systest_foreman
     wrappers:
       - timeout:
