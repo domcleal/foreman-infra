@@ -1,11 +1,15 @@
 #!/bin/bash -xe
 
 function vagrant() {
-  subcmd=shift
+  subcmd=$1
+  shift
   if [ $subcmd = ssh ]; then
     ssh -F ssh_config "$@"
   fi
 }
+
+scp -F ssh_config bootstrap.sh $os:
+vagrant ssh $os bash bootstrap.sh
 
 ### Original systest_foreman below, try not to change it!
 
