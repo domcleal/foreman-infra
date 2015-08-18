@@ -72,7 +72,9 @@ $ssh host virt-builder ${osname}-${osver} \
   --hostname foreman-${os}.example.com \
   --format qcow2 -o /var/lib/libvirt/images/${os}.img ${args} \
   --mkdir /root/.ssh --run-command "'chmod 0700 /root/.ssh'" \
-  --upload /root/.ssh/authorized_keys:/root/.ssh/authorized_keys
+  --upload /root/.ssh/authorized_keys:/root/.ssh/authorized_keys \
+  --edit "'/etc/hosts: s/unassigned-hostname.unassigned-domain/foreman-${os}.example.com/'"
+  #--run-command "'sed -i s/unassigned-hostname.unassigned-domain/foreman-${os}.example.com/ /etc/hosts'" # RHBZ1251499
 
 # Sync cache back
 $ssh host <<EOF

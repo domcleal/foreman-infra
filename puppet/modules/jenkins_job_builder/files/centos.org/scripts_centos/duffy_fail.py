@@ -4,7 +4,7 @@
 #
 # Adapted from https://github.com/kbsingh/centos-ci-scripts
 
-import json, urllib, subprocess, sys
+import json, urllib, subprocess, sys, os.path
 
 with open(os.path.expanduser('~/duffy.key'), 'r') as f:
   api = f.readline().rstrip()
