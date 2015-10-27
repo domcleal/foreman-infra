@@ -1,0 +1,8 @@
+- wrapper:
+    name: abort_build
+    wrappers:
+      - timeout:
+          type: absolute
+          timeout: {timeout}
+          write-description: "Build timed out (after {0} minutes). Marking the build as aborted."
+          abort: true
