@@ -61,7 +61,7 @@
       - default_xvfb
       - timestamps
       - abort_build:
-        timeout: 120
+          timeout_min: '120'
     builders:
       - clone_repository
       - test_plugin
